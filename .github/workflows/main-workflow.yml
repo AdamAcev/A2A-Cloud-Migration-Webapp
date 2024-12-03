@@ -12,37 +12,36 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-permissions:
-  id-token: write
-  contents: read
+    permissions:
+      id-token: write
+      contents: read
 
     steps:
-    # Checkout the repository
-    - name: Checkout code
-      uses: actions/checkout@v3
+      # Checkout the repository
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    # Set up Docker Buildx
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v2
+      # Set up Docker Buildx
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
 
-    # Log in to Azure Container Registry using a service principal
-    - name: Log in to Azure
-      uses: azure/login@v1
-      with:
-        client-id: ${{ secrets.AZURE_CLIENT_ID }}
-        client-secret: ${{ secrets.CREDS }}
-        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      # Log in to Azure Container Registry using a service principal
+      - name: Log in to Azure
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          client-secret: ${{ secrets.CREDS }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-    # Build and Push Docker image
-    - name: Build and Push Docker image
-      uses: docker/build-push-action@v3
-      with:
-        context: .
-        push: true
-        tags: ${{ secrets.ACR_NAME }}.azurecr.io/my-app:${{ github.sha }}
+      # Build and Push Docker image
+      - name: Build and Push Docker image
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          push: true
+          tags: ${{ secrets.ACR_NAME }}.azurecr.io/my-app:${{ github.sha }}
 
-    # Log out from Azure
-    - name: Log out from Azure
-      run: az logout
-
+      # Log out from Azure
+      - name: Log out from Azure
+        run: az logout
