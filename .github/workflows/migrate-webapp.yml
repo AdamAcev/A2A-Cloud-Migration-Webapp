@@ -1,0 +1,46 @@
+name: Migrate Azure Web App to a Different Region
+
+on:
+  workflow_dispatch: # Allows manual triggering
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Step 1: Check out the code
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    # Step 2: Set up Node.js
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 16
+
+    # Step 3: Export source web app configuration (Optional)
+    - name: Export Source App Configuration
+      env:
+        AZURE_WEBAPP_PUBLISH_PROFILE: ${{ secrets.SOURCE_AZURE_WEBAPP_PUBLISH_PROFILE }}
+      run: |
+        echo "Exporting configuration from source app (optional)."
+
+    # Step 4: Deploy to target Azure region
+    - name: Deploy to Target Azure Region
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: <target-app-service-name>
+        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+
+    # Step 5: Validate deployment (Optional)
+    - name: Validate Deployment
+      run: |
+        echo "Validating deployment to target region."
+        curl https://<target-app-service-name>.azurewebsites.net
+
+    # Step 6: Decommission source app (Optional)
+    - name: Decommission Source App
+      env:
+        AZURE_WEBAPP_PUBLISH_PROFILE: ${{ secrets.SOURCE_AZURE_WEBAPP_PUBLISH_PROFILE }}
+      run: |
+        echo "Decommissioning source app (if necessary)."
