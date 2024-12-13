@@ -38,7 +38,7 @@ jobs:
     - name: Validate Deployment
       run: |
         echo "Validating deployment to the target region."
-        curl -I https://A2AMigrationTarget.azurewebsites.net
+        curl -I a2amigrationtarget-ccbkb0g3b2b7ase6.northeurope-01.azurewebsites.net
 
     # Step 6: Decommission source app (Optional)
     - name: Decommission Source App
