@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/45630c93-1fe8-4772-8d7e-458a5954b6bc/resourceGroups/A2A-Webapp-Migration/providers/Microsoft.Web/sites/A2AWebappMigration2",
+    "appService.deploySubpath": "project-folder"
+}
